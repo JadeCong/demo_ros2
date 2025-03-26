@@ -1,3 +1,3 @@
-# ROS2 Packages for ROS2 Demo
+# ROS 2 Packages for Demos
 
 ## 1. Package 
