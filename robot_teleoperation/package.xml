@@ -6,6 +6,8 @@
   <description>The robot_teleoperation package</description>
   <maintainer email="jade.cong@qq.com">Jade Cong</maintainer>
   <license>Apache-2.0</license>
+  <url type="website">https://github.com/JadeCong/demo_ros2/tree/main/robot_teleoperation</url>
+  <author email="jade.cong@qq.com">Jade Cong</author>
   
   <buildtool_depend>ament_cmake</buildtool_depend>
   
