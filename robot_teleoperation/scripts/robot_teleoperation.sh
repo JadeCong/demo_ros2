@@ -4,7 +4,7 @@ echo "Robot Teleoperation Start..."
 
 # Launch master_hfd node
 echo "Launch master_hfd node..."
-gnome-terminal -- bash -c "rros2 launch hfd_teleoperation master_hfd.launch.py; exec bash" &
+gnome-terminal -- bash -c "ros2 launch hfd_teleoperation master_hfd.launch.py; exec bash" &
 PID1=$!
 
 # Launch slave_realman node
