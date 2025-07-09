@@ -17,7 +17,7 @@ cleanup() {
     # pkill -f 'slave_realsense.launch.py'
     
     echo "All child nodes stopped. Exiting..."
-    exit 0
+    # exit 0
 }
 
 # Set trap to catch Ctrl+C signal
