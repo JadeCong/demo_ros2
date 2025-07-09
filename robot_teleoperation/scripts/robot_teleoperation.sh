@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Enable job control
+set -m
+
 echo "Robot Teleoperation Start..."
 
 # Launch master_hfd node
@@ -28,9 +31,13 @@ PID3=$!
 # PID5=$!
 
 # Catch Ctrl+C signal
-trap "echo 'Caught Ctrl+C signal, killing all child processes...'; kill $PID1 $PID2 $PID3; exit 0" SIGINT
+trap "echo 'Caught Ctrl+C signal, killing all child processes...'; kill $PID1 $PID2 $PID3 2>/dev/null; exit 0" SIGINT
 
 # Wait for all child processes to finish
-wait
+# wait
+echo "Press Ctrl+C to exit..."
+while true; do
+    sleep 1
+done
 
 echo "Robot Teleoperation Done..."
