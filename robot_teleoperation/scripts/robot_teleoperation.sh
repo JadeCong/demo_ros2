@@ -13,10 +13,8 @@ cleanup() {
     # pkill -f 'slave_xjcsensor.launch.py'
     # pkill -f 'slave_realsense.launch.py'
     
-    # echo "All child nodes stopped. Exiting..."
+    echo "All child nodes stopped. Exiting..."
     # exit 0
-    echo "Robot Teleoperation Done..."
-    exit 0
 }
 
 # Set trap to catch Ctrl+C signal
@@ -48,5 +46,5 @@ while true; do
     sleep 1
 done
 
-# echo "Robot Teleoperation Done..."
-# exit 0
+echo "Robot Teleoperation Done..."
+exit 0
