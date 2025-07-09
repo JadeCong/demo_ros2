@@ -7,7 +7,7 @@ cleanup() {
     echo "Caught Ctrl+C signal. Stopping all child nodes..."
     
     # Stop all child nodes
-    pkill -f 'ros2 launch'
+    # pkill -f 'ros2 launch'
     
     # Close all child terminal windows
     pkill -f 'master_hfd.launch.py'
