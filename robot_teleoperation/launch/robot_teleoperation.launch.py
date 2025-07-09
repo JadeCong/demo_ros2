@@ -19,30 +19,10 @@ from launch.actions import ExecuteProcess
 
 def generate_launch_description():
     return LaunchDescription([
-        # Launch master_hfd node
+        # Launch robot_teleoperation node
         ExecuteProcess(
-            cmd=[
-                'gnome-terminal', '--', 'bash', '-c',
-                'ros2 launch hfd_teleoperation master_hfd.launch.py; exec bash'
-            ],
-            shell=False
-        ),
-        
-        # Launch slave_realman node
-        ExecuteProcess(
-            cmd=[
-                'gnome-terminal', '--', 'bash', '-c',
-                'ros2 launch realman_teleoperation slave_realman.launch.py; exec bash'
-            ],
-            shell=False
-        ),
-        
-        # Launch slave_ctek node
-        ExecuteProcess(
-            cmd=[
-                'gnome-terminal', '--', 'bash', '-c',
-                'ros2 launch ctek_teleoperation slave_ctek.launch.py; exec bash'
-            ],
-            shell=False
+            cmd=['../scripts/robot_teleoperation.sh'],
+            shell=True,
+            output='screen'
         ),
     ])
