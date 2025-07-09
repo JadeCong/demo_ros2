@@ -21,6 +21,12 @@ cleanup() {
 # Set trap to catch Ctrl+C signal
 trap cleanup SIGINT
 
+# Grant permission to all device ports
+echo "Grant permission to all device ports..."
+echo 156958 | sudo -S chmod 777 /dev/ttyACM0
+sudo -S chmod 777 /dev/ttyUSB0
+sudo -S chmod 777 /dev/ttyCH343USB0
+
 # Launch master_hfd node
 echo "Launch master_hfd node..."
 gnome-terminal --title="MASTER-HFD" -- bash -c "ros2 launch hfd_teleoperation master_hfd.launch.py; exec bash"
