@@ -6,9 +6,6 @@ echo "Robot Teleoperation Start..."
 cleanup() {
     echo "Caught Ctrl+C signal. Stopping all child nodes..."
     
-    # Stop all child nodes
-    # pkill -f 'ros2 launch'
-    
     # Close all child terminal windows
     pkill -f 'master_hfd.launch.py'
     pkill -f 'slave_realman.launch.py'
@@ -50,3 +47,4 @@ while true; do
 done
 
 echo "Robot Teleoperation Done..."
+exit 0
