@@ -34,9 +34,15 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
+# Install programs
+install(PROGRAMS
+  scripts/robot_teleoperation.sh
+  DESTINATION share/${PROJECT_NAME}/scripts
+)
+
 # Install resources
 install(DIRECTORY
-  launch config scripts
+  launch config
   DESTINATION share/${PROJECT_NAME}
 )
 
