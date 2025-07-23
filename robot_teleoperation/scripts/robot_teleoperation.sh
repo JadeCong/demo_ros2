@@ -27,13 +27,13 @@ echo 156958 | sudo -S chmod 777 /dev/ttyACM0
 sudo -S chmod 777 /dev/ttyACM1
 sudo -S chmod 777 /dev/ttyUSB0
 
-# Launch master_hfd node
-echo "Launch master_hfd node..."
-gnome-terminal --title="MASTER-HFD" -- bash -c "ros2 launch hfd_teleoperation master_hfd.launch.py; exec bash"
-
 # Launch slave_xjcsensor node
 echo "Launch slave_xjcsensor node..."
 gnome-terminal --title="SLAVE-XJCSENSOR" -- bash -c "ros2 launch xjcsensor_teleoperation slave_xjcsensor.launch.py; exec bash"
+
+# Launch master_hfd node
+echo "Launch master_hfd node..."
+gnome-terminal --title="MASTER-HFD" -- bash -c "ros2 launch hfd_teleoperation master_hfd.launch.py; exec bash"
 
 # Launch slave_realman node
 echo "Launch slave_realman node..."
