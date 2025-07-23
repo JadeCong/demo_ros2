@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import launch
 from launch import LaunchDescription
 from launch.actions import ExecuteProcess
 from ament_index_python.packages import get_package_share_directory
@@ -20,11 +21,14 @@ import os
 
 
 def generate_launch_description():
+    """
+    Generate launch description for robot_teleoperation node.
+    """
+    
     return LaunchDescription([
-        # Launch robot_teleoperation node
         ExecuteProcess(
             cmd=[os.path.join(get_package_share_directory('robot_teleoperation'), 'scripts', 'robot_teleoperation.sh')],
             shell=True,
-            output='screen'
+            output='screen',
         ),
     ])
