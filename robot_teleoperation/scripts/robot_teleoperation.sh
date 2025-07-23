@@ -24,8 +24,8 @@ trap cleanup SIGINT
 # Grant permission to all device ports
 echo "Grant permission to all device ports..."
 echo 156958 | sudo -S chmod 777 /dev/ttyACM0
-echo 156958 | sudo -S chmod 777 /dev/ttyACM1
-echo 156958 | sudo -S chmod 777 /dev/ttyUSB0
+sudo -S chmod 777 /dev/ttyACM1
+sudo -S chmod 777 /dev/ttyUSB0
 
 # Launch master_hfd node
 echo "Launch master_hfd node..."
