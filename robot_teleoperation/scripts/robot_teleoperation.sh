@@ -6,7 +6,16 @@ echo "Robot Teleoperation Start..."
 cleanup() {
     echo "Caught Ctrl+C signal. Stopping all child nodes..."
     
-    # Close all child terminal windows
+    # Close all terminal windows
+    for pid in $(pgrep -f 'ros2 launch'); do
+        echo "Sending SIGINT to process $pid"
+        kill -SIGINT "$pid"
+    done
+    
+    # Wait for all to exit gracefully
+    sleep 2
+    
+    # Ensure all remaining terminal windows are killed
     pkill -f 'master_hfd.launch.py'
     pkill -f 'slave_realman.launch.py'
     pkill -f 'slave_ctek.launch.py'
