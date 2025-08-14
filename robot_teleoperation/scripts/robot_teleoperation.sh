@@ -33,8 +33,12 @@ trap cleanup SIGINT
 # Grant permission to all device ports
 echo "Grant permission to all device ports..."
 echo 156958 | sudo -S chmod 777 /dev/ttyACM0
-sudo -S chmod 777 /dev/ttyACM1
-sudo -S chmod 777 /dev/ttyUSB0
+sudo chmod 777 /dev/ttyACM1
+sudo chmod 777 /dev/ttyUSB0
+
+# Launch slave_xjcsensor node
+echo "Launch slave_xjcsensor node..."
+gnome-terminal --title="SLAVE-XJCSENSOR" -- bash -c "ros2 launch xjcsensor_teleoperation slave_xjcsensor.launch.py; exec bash"
 
 # Launch master_hfd node
 echo "Launch master_hfd node..."
@@ -47,10 +51,6 @@ gnome-terminal --title="SLAVE-REALMAN" -- bash -c "ros2 launch realman_teleopera
 # Launch slave_ctek node
 echo "Launch slave_ctek node..."
 gnome-terminal --title="SLAVE-CTEK" -- bash -c "ros2 launch ctek_teleoperation slave_ctek.launch.py; exec bash"
-
-# Launch slave_xjcsensor node
-echo "Launch slave_xjcsensor node..."
-gnome-terminal --title="SLAVE-XJCSENSOR" -- bash -c "ros2 launch xjcsensor_teleoperation slave_xjcsensor.launch.py; exec bash"
 
 # Launch slave_realsense node
 echo "Launch slave_realsense node..."
