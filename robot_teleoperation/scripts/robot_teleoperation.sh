@@ -17,7 +17,7 @@ cleanup() {
     done
     
     # Wait for all to exit gracefully
-    wait "${terminal_pids[@]}" 2>/dev/null
+    wait "${terminal_pids[@]}" 2 > /dev/null
     
     echo "All child nodes stopped. Exiting..."
     echo "Robot Teleoperation Done..."
@@ -36,6 +36,7 @@ sudo chmod 777 /dev/ttyUSB0
 # Launch slave_xjcsensor node
 echo "Launch slave_xjcsensor node..."
 gnome-terminal --title="SLAVE-XJCSENSOR" -- bash -c "ros2 launch xjcsensor_teleoperation slave_xjcsensor.launch.py; exec bash" & terminal_pids+=($!)
+sleep 0.5
 
 # Launch master_hfd node
 echo "Launch master_hfd node..."
