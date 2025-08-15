@@ -17,7 +17,7 @@ cleanup() {
     done
     
     # Wait for all to exit gracefully
-    wait "${terminal_pids[@]}" 2 > /dev/null
+    wait "${terminal_pids[@]}" 2>/dev/null
     
     echo "All child nodes stopped. Exiting..."
     echo "Robot Teleoperation Done..."
@@ -29,7 +29,6 @@ trap cleanup SIGINT
 
 # Grant permission to all device ports
 echo "Grant permission to all device ports..."
-# echo 156958 | sudo -S chmod 777 /dev/ttyACM0
 sudo chmod 777 /dev/ttyACM0
 sudo chmod 777 /dev/ttyACM1
 sudo chmod 777 /dev/ttyUSB0
