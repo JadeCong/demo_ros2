@@ -9,15 +9,14 @@ declare -a terminal_pids
 cleanup() {
     echo "Caught Ctrl+C signal. Stopping all child nodes..."
     
-    # Close all terminal windows
+    # Stop all child nodes and wait for them to exit
     for pid in "${terminal_pids[@]}"; do
         if ps -p $pid > /dev/null; then
             kill -SIGINT $pid
+            wait $pid 2>/dev/null
+            kill -9 $pid
         fi
     done
-    
-    # Wait for all to exit gracefully
-    wait "${terminal_pids[@]}" 2 > /dev/null
     
     echo "All child nodes stopped. Exiting..."
     echo "Robot Teleoperation Done..."
