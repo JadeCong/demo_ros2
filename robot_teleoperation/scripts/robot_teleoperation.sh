@@ -12,9 +12,8 @@ cleanup() {
     # Stop all child nodes and wait for them to exit
     for pid in "${terminal_pids[@]}"; do
         if ps -p $pid > /dev/null; then
-            kill -s SIGINT $pid
+            pkill -s SIGINT $pid
             wait $pid 2>/dev/null
-            kill -9 $pid
         fi
     done
     
@@ -34,28 +33,28 @@ sudo chmod 777 /dev/ttyUSB0
 
 # Launch slave_xjcsensor node
 echo "Launch slave_xjcsensor node..."
-gnome-terminal --title="SLAVE-XJCSENSOR" -- bash -c "ros2 launch xjcsensor_teleoperation slave_xjcsensor.launch.py; exec bash; read" &
+gnome-terminal --title="SLAVE-XJCSENSOR" -- bash -c "ros2 launch xjcsensor_teleoperation slave_xjcsensor.launch.py; exec bash" &
 terminal_pids+=($!)
 sleep 0.5
 
 # Launch master_hfd node
 echo "Launch master_hfd node..."
-gnome-terminal --title="MASTER-HFD" -- bash -c "ros2 launch hfd_teleoperation master_hfd.launch.py; exec bash; read" &
+gnome-terminal --title="MASTER-HFD" -- bash -c "ros2 launch hfd_teleoperation master_hfd.launch.py; exec bash" &
 terminal_pids+=($!)
 
 # Launch slave_realman node
 echo "Launch slave_realman node..."
-gnome-terminal --title="SLAVE-REALMAN" -- bash -c "ros2 launch realman_teleoperation slave_realman.launch.py; exec bash; read" &
+gnome-terminal --title="SLAVE-REALMAN" -- bash -c "ros2 launch realman_teleoperation slave_realman.launch.py; exec bash" &
 terminal_pids+=($!)
 
 # Launch slave_ctek node
 echo "Launch slave_ctek node..."
-gnome-terminal --title="SLAVE-CTEK" -- bash -c "ros2 launch ctek_teleoperation slave_ctek.launch.py; exec bash; read" &
+gnome-terminal --title="SLAVE-CTEK" -- bash -c "ros2 launch ctek_teleoperation slave_ctek.launch.py; exec bash" &
 terminal_pids+=($!)
 
 # Launch slave_realsense node
 echo "Launch slave_realsense node..."
-gnome-terminal --title="SLAVE-REALSENSE" -- bash -c "ros2 launch realsense_teleoperation slave_realsense.launch.py; exec bash; read" &
+gnome-terminal --title="SLAVE-REALSENSE" -- bash -c "ros2 launch realsense_teleoperation slave_realsense.launch.py; exec bash" &
 terminal_pids+=($!)
 
 # Catch Ctrl+C signal
