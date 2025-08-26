@@ -40,9 +40,9 @@ launch_node() {
     
     # Launch node in sub terminal
     gnome-terminal --tab --maximize --title="$title" -- bash -c "ros2 launch ${device}_teleoperation ${type}_${device}.launch.py; read" &
-    local pid=$!
-    node_pids+=($pid)
-    # node_pids+=($!)
+    # local pid=$!
+    # node_pids+=($pid)
+    node_pids+=($!)
     sleep 0.5
 }
 
@@ -68,6 +68,9 @@ launch_node "SLAVE-REALSENSE" "realsense" "slave"
 
 # Catch Ctrl+C signal
 echo "All child nodes started. Press Ctrl+C to exit..."
+while true; do
+    sleep 1
+done
 
 # Wait for all child node processes
 wait ${node_pids[@]} 2>/dev/null
