@@ -12,7 +12,7 @@ cleanup() {
     # Stop all child nodes and wait for them to exit
     for pid in "${terminal_pids[@]}"; do
         if ps -p $pid > /dev/null; then
-            pkill -s SIGINT $pid
+            kill -s SIGINT $pid
             wait $pid 2>/dev/null
         fi
     done
