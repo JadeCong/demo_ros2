@@ -39,7 +39,7 @@ launch_node() {
     local type=$3
     
     # Launch node in sub terminal
-    gnome-terminal --tab --maximize --title="$title" -- bash -c "ros2 launch ${device}_teleoperation ${type}_${device}.launch.py; read" &
+    gnome-terminal --tab --maximize --title="$title" -- bash -c "ros2 launch ${device}_teleoperation ${type}_${device}.launch.py; echo 'Press ENTER to close...'; read" &
     local pid=$!
     node_pids+=($pid)
     # node_pids+=($!)
