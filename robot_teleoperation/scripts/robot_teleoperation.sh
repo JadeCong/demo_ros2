@@ -13,7 +13,8 @@ cleanup() {
     for pid in "${node_pids[@]}"; do
         if ps -p $pid > /dev/null; then
             kill -s SIGINT $pid
-            wait $pid 2>/dev/null
+            # kill -s SIGINT $pid 2>/dev/null
+            # wait $pid 2>/dev/null
         fi
     done
     
@@ -39,7 +40,7 @@ launch_node() {
     local type=$3
     
     # Launch node in sub terminal
-    gnome-terminal --tab --maximize --title="$title" -- bash -c "ros2 launch ${device}_teleoperation ${type}_${device}.launch.py; echo 'Press ENTER to close...'; read" &
+    gnome-terminal --tab --maximize --title="$title" -- bash -c "trap 'exit 0' SIGINT; ros2 launch ${device}_teleoperation ${type}_${device}.launch.py; read" &
     local pid=$!
     node_pids+=($pid)
     # node_pids+=($!)
@@ -74,3 +75,6 @@ done
 
 # Wait for all child node processes
 # wait ${node_pids[@]} 2>/dev/null
+for pid in "${node_pids[@]}"; do
+    wait $pid 2>/dev/null
+done 
