@@ -2,15 +2,15 @@
 
 echo "Robot Teleoperation Start..."
 
-# Declare array variable for storing all terminal pids
-declare -a terminal_pids
+# Declare array variable for storing all node pids
+declare -a node_pids
 
 # Define cleanup function
 cleanup() {
     echo "Caught Ctrl+C signal. Stopping all child nodes..."
     
     # Stop all child nodes and wait for them to exit
-    for pid in "${terminal_pids[@]}"; do
+    for pid in "${node_pids[@]}"; do
         if ps -p $pid > /dev/null; then
             kill -s SIGINT $pid
             wait $pid 2>/dev/null
@@ -31,34 +31,43 @@ sudo chmod 777 /dev/ttyACM0
 sudo chmod 777 /dev/ttyACM1
 sudo chmod 777 /dev/ttyUSB0
 
+# Declare launch_node function
+launch_node() {
+    # Define the local variables for launching node
+    local title=$1
+    local device=$2
+    local type=$3
+    
+    # Launch node in sub terminal
+    gnome-terminal --tab --maximize --title="$title" -- bash -c "ros2 launch ${device}_teleoperation ${type}_${device}.launch.py; read" &
+    local pid=$!
+    node_pids+=($pid)
+    # node_pids+=($!)
+    sleep 0.5
+}
+
 # Launch slave_xjcsensor node
 echo "Launch slave_xjcsensor node..."
-gnome-terminal --title="SLAVE-XJCSENSOR" -- bash -c "ros2 launch xjcsensor_teleoperation slave_xjcsensor.launch.py; exec bash" &
-terminal_pids+=($!)
-sleep 0.5
+launch_node "SLAVE-XJCSENSOR" "xjcsensor" "slave"
 
 # Launch master_hfd node
 echo "Launch master_hfd node..."
-gnome-terminal --title="MASTER-HFD" -- bash -c "ros2 launch hfd_teleoperation master_hfd.launch.py; exec bash" &
-terminal_pids+=($!)
+launch_node "MASTER-HFD" "hfd" "master"
 
 # Launch slave_realman node
 echo "Launch slave_realman node..."
-gnome-terminal --title="SLAVE-REALMAN" -- bash -c "ros2 launch realman_teleoperation slave_realman.launch.py; exec bash" &
-terminal_pids+=($!)
+launch_node "SLAVE-REALMAN" "realman" "slave"
 
 # Launch slave_ctek node
 echo "Launch slave_ctek node..."
-gnome-terminal --title="SLAVE-CTEK" -- bash -c "ros2 launch ctek_teleoperation slave_ctek.launch.py; exec bash" &
-terminal_pids+=($!)
+launch_node "SLAVE-CTEK" "ctek" "slave"
 
 # Launch slave_realsense node
 echo "Launch slave_realsense node..."
-gnome-terminal --title="SLAVE-REALSENSE" -- bash -c "ros2 launch realsense_teleoperation slave_realsense.launch.py; exec bash" &
-terminal_pids+=($!)
+launch_node "SLAVE-REALSENSE" "realsense" "slave"
 
 # Catch Ctrl+C signal
-echo "Press Ctrl+C to exit..."
-while true; do
-    sleep 1
-done
+echo "All child nodes started. Press Ctrl+C to exit..."
+
+# Wait for all child node processes
+wait ${node_pids[@]} 2>/dev/null
