@@ -2,8 +2,9 @@
 
 echo "Robot Teleoperation Start..."
 
-# Declare array variable for storing all node pids
+# Declare array variables for storing all node pids and terminal pids
 declare -a node_pids
+declare -a terminal_pids
 
 # Define cleanup function
 cleanup() {
@@ -13,8 +14,8 @@ cleanup() {
     for pid in "${node_pids[@]}"; do
         if ps -p $pid > /dev/null; then
             kill -s SIGINT $pid
-            # kill -s SIGINT $pid 2>/dev/null
-            # wait $pid 2>/dev/null
+            wait $pid 2>/dev/null
+            # kill -SIGHUP $pid
         fi
     done
     
@@ -40,10 +41,9 @@ launch_node() {
     local type=$3
     
     # Launch node in sub terminal
-    gnome-terminal --tab --maximize --title="$title" -- bash -c "trap 'exit 0' SIGINT; ros2 launch ${device}_teleoperation ${type}_${device}.launch.py; read" &
+    gnome-terminal --tab --maximize --title="$title" -- bash -c "ros2 launch ${device}_teleoperation ${type}_${device}.launch.py; exec bash" &
     local pid=$!
-    node_pids+=($pid)
-    # node_pids+=($!)
+    node_pids+=($(pgrep -P "$pid" bash))
     sleep 0.5
 }
 
@@ -72,9 +72,3 @@ echo "All child nodes started. Press Ctrl+C to exit..."
 while true; do
     sleep 1
 done
-
-# Wait for all child node processes
-# wait ${node_pids[@]} 2>/dev/null
-for pid in "${node_pids[@]}"; do
-    wait $pid 2>/dev/null
-done 
