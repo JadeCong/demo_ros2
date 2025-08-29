@@ -15,7 +15,7 @@ cleanup() {
         if ps -p $pid > /dev/null; then
             kill -s SIGINT $pid
             wait $pid 2>/dev/null
-            # kill -SIGHUP $pid
+            kill -SIGHUP $(ps -o ppid= -p $pid)
         fi
     done
     
@@ -42,8 +42,9 @@ launch_node() {
     
     # Launch node in sub terminal
     gnome-terminal --tab --maximize --title="$title" -- bash -c "ros2 launch ${device}_teleoperation ${type}_${device}.launch.py; exec bash" &
-    local pid=$!
-    node_pids+=($(pgrep -P "$pid" bash))
+    local pid=$(ps -o ppid= -p $(pstree -p | grep -oP "$device\(\K[0-9]+(?=\))"))
+    node_pids+=$pid
+    terminal_pids+=$(ps -o ppid= -p $pid)
     sleep 0.5
 }
 
