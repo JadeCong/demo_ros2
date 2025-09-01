@@ -4,7 +4,6 @@ echo "Robot Teleoperation Start..."
 
 # Declare array variables for storing all node pids and terminal pids
 declare -a node_pids
-declare -a terminal_pids
 
 # Define cleanup function
 cleanup() {
@@ -12,10 +11,11 @@ cleanup() {
     
     # Stop all child nodes and wait for them to exit
     for pid in "${node_pids[@]}"; do
-        if ps -p $pid > /dev/null; then
-            kill -s SIGINT $pid
+        if ps -p $pid > /dev/null 2>&1; then
+            ppid=$(ps -o ppid= -p $pid 2>/dev/null | awk '{print $1}')
+            kill -s SIGINT $pid 2>/dev/null
             wait $pid 2>/dev/null
-            kill -SIGHUP $(ps -o ppid= -p $pid)
+            kill -SIGHUP $ppid 2>/dev/null
         fi
     done
     
@@ -41,11 +41,10 @@ launch_node() {
     local type=$3
     
     # Launch node in sub terminal
-    gnome-terminal --tab --maximize --title="$title" -- bash -c "ros2 launch ${device}_teleoperation ${type}_${device}.launch.py; exec bash" &
-    local pid=$(ps -o ppid= -p $(pstree -p | grep -oP "$device\(\K[0-9]+(?=\))"))
-    node_pids+=$pid
-    terminal_pids+=$(ps -o ppid= -p $pid)
-    sleep 0.5
+    gnome-terminal --tab --maximize --title="$title" -- bash -c "ros2 launch ${device}_teleoperation ${type}_${device}.launch.py; exec bash"
+    # sleep $latency
+    local pid=$(pgrep -f "ros2 launch ${device}_teleoperation ${type}_${device}.launch.py")
+    node_pids+=($pid)
 }
 
 # Launch slave_xjcsensor node
