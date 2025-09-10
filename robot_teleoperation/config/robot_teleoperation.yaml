@@ -2,6 +2,7 @@ robot_teleoperation:
   ros__parameters:
     node_name: robot_teleoperation
     user_password: '156958'
+    launch_order: ['3', '0', '1', '2', '4'] # Order: sensor, haptic, robot, effector, camera(launch correctly)
     hardware_device:
       haptic:
         name: hfd
@@ -11,7 +12,7 @@ robot_teleoperation:
       robot:
         name: realman
         type: slave
-        port: None
+        port: None # No virtual port
         title: SLAVE-REALMAN
       effector:
         name: ctek
@@ -26,5 +27,5 @@ robot_teleoperation:
       camera:
         name: realsense
         type: slave
-        port: None
+        port: None # No virtual port
         title: SLAVE-REALSENSE

@@ -24,6 +24,8 @@ camera_name=${18}
 camera_type=${19}
 camera_port=${20}
 camera_title=${21}
+shift 21
+launch_order=("$@")
 device_names=($haptic_name $robot_name $effector_name $sensor_name $camera_name)
 device_types=($haptic_type $robot_type $effector_type $sensor_type $camera_type)
 device_ports=($haptic_port $robot_port $effector_port $sensor_port $camera_port)
@@ -80,7 +82,6 @@ launch_node() {
 }
 
 # Launch all child nodes
-launch_order=(3 0 1 2 4) # sensor, haptic, robot, effector, camera
 for index in "${launch_order[@]}"; do
     echo "Launch ${device_types[$index]}_${device_names[$index]} node..."
     launch_node ${device_names[$index]} ${device_types[$index]} ${device_titles[$index]}

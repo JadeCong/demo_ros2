@@ -34,6 +34,7 @@ def generate_launch_description():
     robot_teleoperation_params = params['robot_teleoperation']['ros__parameters']
     node_name = robot_teleoperation_params.get('node_name', '')
     user_password = robot_teleoperation_params.get('user_password', '')
+    launch_order = robot_teleoperation_params.get('launch_order', [])
     hardware_device = robot_teleoperation_params.get('hardware_device', {})
     
     haptic_params = hardware_device.get('haptic', {})
@@ -76,7 +77,7 @@ def generate_launch_description():
                 effector_name, effector_type, effector_port, effector_title,
                 sensor_name, sensor_type, sensor_port, sensor_title,
                 camera_name, camera_type, camera_port, camera_title
-            ],
+            ] + launch_order,
             shell=True,
             output='screen',
         ),
