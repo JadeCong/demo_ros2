@@ -12,9 +12,10 @@ cleanup() {
     # Stop all child nodes and wait for them to exit
     for pid in "${node_pids[@]}"; do
         if ps -p $pid > /dev/null 2>&1; then
+            pgid=$(ps -o pgid= -p $pid 2>/dev/null | tr -d ' ')
             ppid=$(ps -o ppid= -p $pid 2>/dev/null | awk '{print $1}')
-            kill -s SIGINT $pid 2>/dev/null
-            wait $pid 2>/dev/null
+            kill -s SIGINT -$pgid 2>/dev/null
+            wait -p $pgid 2>/dev/null
             kill -SIGHUP $ppid 2>/dev/null
         fi
     done
