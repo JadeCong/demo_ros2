@@ -16,10 +16,11 @@ cleanup() {
             ppid=$(ps -o ppid= -p $pid 2>/dev/null | awk '{print $1}')
             kill -s SIGINT -$pgid 2>/dev/null
             # wait -p $pgid 2>/dev/null
-            while kill -0 -$pgid 2>/dev/null; do
-                sleep 1
-            done
-            kill -SIGHUP $ppid 2>/dev/null
+            (   while kill -0 -$pgid 2>/dev/null; do
+                    sleep 0.5
+                done
+                kill -SIGHUP $ppid 2>/dev/null
+            ) &
         fi
     done
     
@@ -45,7 +46,7 @@ launch_node() {
     local type=$3
     
     # Launch node in sub terminal
-    gnome-terminal --tab --maximize --title="$title" -- bash -c "ros2 launch ${device}_teleoperation ${type}_${device}.launch.py; exec bash"
+    gnome-terminal --tab --maximize --title="$title" -- bash -c "ros2 launch ${device}_teleoperation ${type}_${device}.launch.py; exit"
     # sleep $latency
     local pid=$(pgrep -f "ros2 launch ${device}_teleoperation ${type}_${device}.launch.py")
     node_pids+=($pid)
@@ -74,5 +75,5 @@ launch_node "SLAVE-REALSENSE" "realsense" "slave"
 # Catch Ctrl+C signal
 echo "All child nodes started. Press Ctrl+C to exit..."
 while true; do
-    sleep 1
+    sleep 0.5
 done
