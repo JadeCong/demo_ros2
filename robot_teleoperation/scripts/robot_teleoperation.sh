@@ -15,7 +15,6 @@ cleanup() {
             pgid=$(ps -o pgid= -p $pid 2>/dev/null | tr -d ' ')
             ppid=$(ps -o ppid= -p $pid 2>/dev/null | awk '{print $1}')
             kill -s SIGINT -$pgid 2>/dev/null
-            # wait -p $pgid 2>/dev/null
             (   while kill -0 -$pgid 2>/dev/null; do
                     sleep 0.5
                 done
@@ -47,14 +46,9 @@ launch_node() {
     
     # Launch node in sub terminal
     gnome-terminal --tab --maximize --title="$title" -- bash -c "ros2 launch ${device}_teleoperation ${type}_${device}.launch.py; exit"
-    # sleep $latency
     local pid=$(pgrep -f "ros2 launch ${device}_teleoperation ${type}_${device}.launch.py")
     node_pids+=($pid)
 }
-
-# Launch slave_xjcsensor node
-echo "Launch slave_xjcsensor node..."
-launch_node "SLAVE-XJCSENSOR" "xjcsensor" "slave"
 
 # Launch master_hfd node
 echo "Launch master_hfd node..."
@@ -67,6 +61,10 @@ launch_node "SLAVE-REALMAN" "realman" "slave"
 # Launch slave_ctek node
 echo "Launch slave_ctek node..."
 launch_node "SLAVE-CTEK" "ctek" "slave"
+
+# Launch slave_xjcsensor node
+echo "Launch slave_xjcsensor node..."
+launch_node "SLAVE-XJCSENSOR" "xjcsensor" "slave"
 
 # Launch slave_realsense node
 echo "Launch slave_realsense node..."
