@@ -79,25 +79,12 @@ launch_node() {
     node_pids+=($pid)
 }
 
-# Launch haptic node
-echo "Launch ${haptic_type}_${haptic_name} node..."
-launch_node $haptic_name $haptic_type $haptic_title
-
-# Launch robot node
-echo "Launch ${robot_type}_${robot_name} node..."
-launch_node $robot_name $robot_type $robot_title
-
-# Launch effector node
-echo "Launch ${effector_type}_${effector_name} node..."
-launch_node $effector_name $effector_type $effector_title
-
-# Launch sensor node
-echo "Launch ${sensor_type}_${sensor_name} node..."
-launch_node $sensor_name $sensor_type $sensor_title
-
-# Launch camera node
-echo "Launch ${camera_type}_${camera_name} node..."
-launch_node $camera_name $camera_type $camera_title
+# Launch all child nodes
+launch_order=(3 0 1 2 4) # sensor, haptic, robot, effector, camera
+for index in "${launch_order[@]}"; do
+    echo "Launch ${device_types[$index]}_${device_names[$index]} node..."
+    launch_node ${device_names[$index]} ${device_types[$index]} ${device_titles[$index]}
+done
 
 # Catch Ctrl+C signal
 echo "All child nodes started. Press Ctrl+C to exit..."
