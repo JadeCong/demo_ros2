@@ -2,6 +2,30 @@
 
 echo "Robot Teleoperation Start..."
 
+# Get the config parameters from yaml config file
+user_password=$1
+haptic_name=$2
+haptic_type=$3
+haptic_port=$4
+haptic_title=$5
+robot_name=$6
+robot_type=$7
+robot_port=$8
+robot_title=$9
+effector_name=$10
+effector_type=$11
+effector_port=$12
+effector_title=$13
+sensor_name=$14
+sensor_type=$15
+sensor_port=$16
+sensor_title=$17
+camera_name=$18
+camera_type=$19
+camera_port=$20
+camera_title=$21
+device_ports=(${haptic_port} ${robot_port} ${effector_port} ${sensor_port} ${camera_port})
+
 # Declare array variables for storing all node pids and terminal pids
 declare -a node_pids
 
@@ -33,42 +57,44 @@ trap cleanup SIGINT
 
 # Grant permission to all device ports
 echo "Grant permission to all device ports..."
-sudo chmod 777 /dev/ttyACM0
-sudo chmod 777 /dev/ttyACM1
-sudo chmod 777 /dev/ttyUSB0
+for port in "${device_ports[@]}"; do
+    if [-n "$port"]; then
+        echo ${user_password} | sudo -S chmod 777 $port
+    fi
+done
 
 # Declare launch_node function
 launch_node() {
     # Define the local variables for launching node
-    local title=$1
-    local device=$2
-    local type=$3
+    local name=$1
+    local type=$2
+    local title=$3
     
     # Launch node in sub terminal
-    gnome-terminal --tab --maximize --title="$title" -- bash -c "ros2 launch ${device}_teleoperation ${type}_${device}.launch.py; exit"
-    local pid=$(pgrep -f "ros2 launch ${device}_teleoperation ${type}_${device}.launch.py")
+    gnome-terminal --tab --maximize --title="$title" -- bash -c "ros2 launch ${name}_teleoperation ${type}_${name}.launch.py; exit"
+    local pid=$(pgrep -f "ros2 launch ${name}_teleoperation ${type}_${name}.launch.py")
     node_pids+=($pid)
 }
 
-# Launch master_hfd node
-echo "Launch master_hfd node..."
-launch_node "MASTER-HFD" "hfd" "master"
+# Launch haptic node
+echo "Launch ${haptic_type}_${haptic_name} node..."
+launch_node ${haptic_name} ${haptic_type} ${haptic_title}
 
-# Launch slave_realman node
-echo "Launch slave_realman node..."
-launch_node "SLAVE-REALMAN" "realman" "slave"
+# Launch robot node
+echo "Launch ${robot_type}_${robot_name} node..."
+launch_node ${robot_name} ${robot_type} ${robot_title}
 
-# Launch slave_ctek node
-echo "Launch slave_ctek node..."
-launch_node "SLAVE-CTEK" "ctek" "slave"
+# Launch effector node
+echo "Launch ${effector_type}_${effector_name} node..."
+launch_node ${effector_name} ${effector_type} ${effector_title}
 
-# Launch slave_xjcsensor node
-echo "Launch slave_xjcsensor node..."
-launch_node "SLAVE-XJCSENSOR" "xjcsensor" "slave"
+# Launch sensor node
+echo "Launch ${sensor_type}_${sensor_name} node..."
+launch_node ${sensor_name} ${sensor_type} ${sensor_title}
 
-# Launch slave_realsense node
-echo "Launch slave_realsense node..."
-launch_node "SLAVE-REALSENSE" "realsense" "slave"
+# Launch camera node
+echo "Launch ${camera_type}_${camera_name} node..."
+launch_node ${camera_name} ${camera_type} ${camera_title}
 
 # Catch Ctrl+C signal
 echo "All child nodes started. Press Ctrl+C to exit..."

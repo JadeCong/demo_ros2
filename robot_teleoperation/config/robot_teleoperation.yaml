@@ -1,3 +1,30 @@
 robot_teleoperation:
   ros__parameters:
     node_name: robot_teleoperation
+    user_password: '156958'
+    hardware_device:
+      haptic:
+        name: hfd
+        type: master
+        port: /dev/ttyACM0
+        title: MASTER-HFD
+      robot:
+        name: realman
+        type: slave
+        port: 
+        title: SLAVE-REALMAN
+      effector:
+        name: ctek
+        type: slave
+        port: /dev/ttyUSB0
+        title: SLAVE-CTEK
+      sensor:
+        name: xjcsensor
+        type: slave
+        port: /dev/ttyACM1
+        title: SLAVE-XJCSENSOR
+      camera:
+        name: realsense
+        type: slave
+        port: 
+        title: SLAVE-REALSENSE
