@@ -15,7 +15,10 @@ cleanup() {
             pgid=$(ps -o pgid= -p $pid 2>/dev/null | tr -d ' ')
             ppid=$(ps -o ppid= -p $pid 2>/dev/null | awk '{print $1}')
             kill -s SIGINT -$pgid 2>/dev/null
-            wait -p $pgid 2>/dev/null
+            # wait -p $pgid 2>/dev/null
+            while kill -0 -$pgid 2>/dev/null; do
+                sleep 1
+            done
             kill -SIGHUP $ppid 2>/dev/null
         fi
     done
