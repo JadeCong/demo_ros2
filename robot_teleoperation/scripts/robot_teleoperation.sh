@@ -12,19 +12,22 @@ robot_name=$6
 robot_type=$7
 robot_port=$8
 robot_title=$9
-effector_name=$10
-effector_type=$11
-effector_port=$12
-effector_title=$13
-sensor_name=$14
-sensor_type=$15
-sensor_port=$16
-sensor_title=$17
-camera_name=$18
-camera_type=$19
-camera_port=$20
-camera_title=$21
-device_ports=(${haptic_port} ${robot_port} ${effector_port} ${sensor_port} ${camera_port})
+effector_name=${10}
+effector_type=${11}
+effector_port=${12}
+effector_title=${13}
+sensor_name=${14}
+sensor_type=${15}
+sensor_port=${16}
+sensor_title=${17}
+camera_name=${18}
+camera_type=${19}
+camera_port=${20}
+camera_title=${21}
+device_names=($haptic_name $robot_name $effector_name $sensor_name $camera_name)
+device_types=($haptic_type $robot_type $effector_type $sensor_type $camera_type)
+device_ports=($haptic_port $robot_port $effector_port $sensor_port $camera_port)
+device_titles=($haptic_title $robot_title $effector_title $sensor_title $camera_title)
 
 # Declare array variables for storing all node pids and terminal pids
 declare -a node_pids
@@ -58,8 +61,8 @@ trap cleanup SIGINT
 # Grant permission to all device ports
 echo "Grant permission to all device ports..."
 for port in "${device_ports[@]}"; do
-    if [-n "$port"]; then
-        echo ${user_password} | sudo -S chmod 777 $port
+    if [ -n $port ] && [ $port != "None" ]; then
+        echo $user_password | sudo -S chmod 777 $port
     fi
 done
 
@@ -78,23 +81,23 @@ launch_node() {
 
 # Launch haptic node
 echo "Launch ${haptic_type}_${haptic_name} node..."
-launch_node ${haptic_name} ${haptic_type} ${haptic_title}
+launch_node $haptic_name $haptic_type $haptic_title
 
 # Launch robot node
 echo "Launch ${robot_type}_${robot_name} node..."
-launch_node ${robot_name} ${robot_type} ${robot_title}
+launch_node $robot_name $robot_type $robot_title
 
 # Launch effector node
 echo "Launch ${effector_type}_${effector_name} node..."
-launch_node ${effector_name} ${effector_type} ${effector_title}
+launch_node $effector_name $effector_type $effector_title
 
 # Launch sensor node
 echo "Launch ${sensor_type}_${sensor_name} node..."
-launch_node ${sensor_name} ${sensor_type} ${sensor_title}
+launch_node $sensor_name $sensor_type $sensor_title
 
 # Launch camera node
 echo "Launch ${camera_type}_${camera_name} node..."
-launch_node ${camera_name} ${camera_type} ${camera_title}
+launch_node $camera_name $camera_type $camera_title
 
 # Catch Ctrl+C signal
 echo "All child nodes started. Press Ctrl+C to exit..."

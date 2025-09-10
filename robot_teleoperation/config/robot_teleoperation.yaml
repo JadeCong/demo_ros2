@@ -11,7 +11,7 @@ robot_teleoperation:
       robot:
         name: realman
         type: slave
-        port: 
+        port: None
         title: SLAVE-REALMAN
       effector:
         name: ctek
@@ -26,5 +26,5 @@ robot_teleoperation:
       camera:
         name: realsense
         type: slave
-        port: 
+        port: None
         title: SLAVE-REALSENSE

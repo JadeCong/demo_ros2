@@ -68,7 +68,8 @@ def generate_launch_description():
     
     return LaunchDescription([
         ExecuteProcess(
-            cmd=[script_file,
+            cmd=[
+                script_file,
                 user_password,
                 haptic_name, haptic_type, haptic_port, haptic_title,
                 robot_name, robot_type, robot_port, robot_title,
