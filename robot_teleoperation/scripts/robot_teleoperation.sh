@@ -85,6 +85,7 @@ launch_node() {
 for index in "${launch_order[@]}"; do
     echo "Launch ${device_types[$index]}_${device_names[$index]} node..."
     launch_node ${device_names[$index]} ${device_types[$index]} ${device_titles[$index]}
+    sleep 0.2
 done
 
 # Catch Ctrl+C signal
