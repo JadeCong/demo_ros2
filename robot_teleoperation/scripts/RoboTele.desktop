@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=RoboTele
+GenericName=Robot Teleoperation
+Comment=Robot Teleoperation Launcher
+Keywords=Robot;Teleoperation;Launcher;Local
+Exec=bash -c "$(dirname %k)/RoboTele.sh"
+Icon=utilities-terminal
+Terminal=true
+Categories=Launcher;Development;Graphics;
+StartupNotify=true
