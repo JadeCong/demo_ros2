@@ -2,10 +2,10 @@
 Version=1.0
 Type=Application
 Name=RoboTele
-GenericName=Robot Teleoperation
-Comment=Robot Teleoperation Launcher
-Keywords=Robot;Teleoperation;Launcher;Local
-Exec=bash -c "$(dirname %k)/RoboTele.sh"
+GenericName="Robot Teleoperation ROS2 Launcher"
+Comment="Launch Robot Teleoperation Nodes"
+Keywords=ROS2;
+Exec=sh "$(dirname %k)/RoboTele.sh"
 Icon=utilities-terminal
 Terminal=true
 Categories=Launcher;Development;Graphics;
