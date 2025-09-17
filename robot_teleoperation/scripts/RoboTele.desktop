@@ -8,5 +8,5 @@ Keywords=ROS2;
 Exec=sh "$(dirname %k)/RoboTele.sh"
 Icon="$(dirname %k)/RoboTele.png"
 Terminal=true
-Categories=Launcher;Development;Graphics;
+Categories=X-Launcher;Development;Graphics;
 StartupNotify=true
